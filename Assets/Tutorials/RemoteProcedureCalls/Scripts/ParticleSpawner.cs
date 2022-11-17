@@ -17,25 +17,18 @@ namespace DapperDino.UMT.RemoteProcedureCalls
 
             // Send a message to THE server to execute this method
             SpawnParticleServerRpc();
-
-            // Spawn it instantly for ourself since we don't need to
-            // wait for the server
-            Instantiate(particlePrefab, transform.position, Quaternion.identity);
         }
 
-        [ServerRpc(Delivery = RpcDelivery.Unreliable)]
+        [ServerRpc]
         private void SpawnParticleServerRpc()
         {
             // Send a message to ALL clients to execute this method
             SpawnParticleClientRpc();
         }
 
-        [ClientRpc(Delivery = RpcDelivery.Unreliable)]
+        [ClientRpc]
         private void SpawnParticleClientRpc()
         {
-            // Make sure we don't spawn it twice for ourselves
-            if (IsOwner) { return; }
-
             // Spawn the particles!
             Instantiate(particlePrefab, transform.position, Quaternion.identity);
         }
